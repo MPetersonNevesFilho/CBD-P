@@ -1,0 +1,6 @@
+# CBD – Lab201 – Marcus Filho - NMec 101082
+
+// Letra a)
+A base de dados escolhida foi Australian Fatal Road Accident 1989-2021, com 52.843 casos de estudo contendo as seguintes informações: Crash ID, State, Month, Year, Dayweek, Time, Crash Type, Bus Involvement, Heavy Rigid Truck Involvement, Articulated Truck Involvement, Speed Limit, Road User, Gender, Age, National Remoteness Areas, SA4 Name 2016, National LGA Name 2017, National Road Type, Christmas Period, Easter Period, Age Group, Day of week, Time of day.
+
+// Letra b)

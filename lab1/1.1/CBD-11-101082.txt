@@ -1,0 +1,12 @@
+ping
+help
+ping [teste]
+ping 
+pong
+help ping
+help redis-cli
+help
+quit
+help @bitmap
+help @list
+quit

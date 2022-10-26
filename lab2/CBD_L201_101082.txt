@@ -1,0 +1,40 @@
+# CBD – Lab201 – Marcus Filho
+Criação da DB testeA, inserção de objeto "dummy", retirada do mesmo e eliminação de bd testeA.
+
+--- Criação da BD
+> use testeA
+switched to db testeA
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+
+--- Inserção de objeto "dummy"
+> db.testeA.insert({"testeName":"testeNumeroUm"})
+WriteResult({ "nInserted" : 1 })
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+testeA  0.000GB
+> db.testeA.find().pretty()
+{
+        "_id" : ObjectId("63582576c2331ad5dc41a018"),
+        "testeName" : "testeNumeroUm"
+}
+
+
+--- Retirada de objeto "dummy"
+> db.testeA.remove({"testeName":"testeNumeroUm"})
+WriteResult({ "nRemoved" : 1 })
+- Nenhum objeto encontrado
+> db.testeA.find().pretty()
+> db.dropDatabase()
+{ "ok" : 1 }
+
+--- Confirmação da eliminação da bd testeA
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
