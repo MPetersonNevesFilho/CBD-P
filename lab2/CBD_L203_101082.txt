@@ -1,4 +1,4 @@
-# CBD – Lab201 – Marcus Filho - NMec 101082
+# CBD – Lab203 – Marcus Filho - NMec 101082
 
 // Letra c)
 db.phones.aggregate([{"$group":{_id:"$components.prefix", count:{$sum:1}}}])
