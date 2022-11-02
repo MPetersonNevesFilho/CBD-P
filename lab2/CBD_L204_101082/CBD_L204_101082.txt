@@ -1,0 +1,50 @@
+# CBD – Lab204 – Marcus Filho - NMec 101082
+
+//Letra A)
+//Criação do Find na função mongoFind de CbdApplication.java
+//Faltando insert e update.
+
+>>>>>>>>>> Mongo Find
+
+//{"localidade": "Queens", "restaurant_id": "40367749"}
+//{"localidade": "Manhattan", "restaurant_id": "40367797"}
+//{"localidade": "Manhattan", "restaurant_id": "40368223"}
+//{"localidade": "Bronx", "restaurant_id": "40369299"}
+//{"localidade": "Bronx", "restaurant_id": "40369641"}
+//{"localidade": "Bronx", "restaurant_id": "40374136"}
+//{"localidade": "Manhattan", "restaurant_id": "40376493"}
+//{"localidade": "Bronx", "restaurant_id": "40377124"}
+//{"localidade": "Queens", "restaurant_id": "40379566"}
+//{"localidade": "Brooklyn", "restaurant_id": "40380657"}
+//{"localidade": "Queens", "restaurant_id": "40383151"}
+//{"localidade": "Manhattan", "restaurant_id": "40385587"}
+//{"localidade": "Bronx", "restaurant_id": "40390814"}
+//{"localidade": "Manhattan", "restaurant_id": "40401217"}
+//{"localidade": "Queens", "restaurant_id": "40512788"}
+//{"localidade": "Manhattan", "restaurant_id": "40512868"}
+//{"localidade": "Manhattan", "restaurant_id": "40515523"}
+//{"localidade": "Bronx", "restaurant_id": "40573338"}
+//{"localidade": "Manhattan", "restaurant_id": "40577535"}
+//{"localidade": "Manhattan", "restaurant_id": "40586621"}
+//{"localidade": "Manhattan", "restaurant_id": "40602482"}
+//{"localidade": "Manhattan", "restaurant_id": "40602783"}
+//{"localidade": "Bronx", "restaurant_id": "40622037"}
+//{"localidade": "Manhattan", "restaurant_id": "40624409"}
+//{"localidade": "Manhattan", "restaurant_id": "40665141"}
+//{"localidade": "Bronx", "restaurant_id": "40691110"}
+//{"localidade": "Manhattan", "restaurant_id": "40699514"}
+//{"localidade": "Manhattan", "restaurant_id": "40734467"}
+//{"localidade": "Queens", "restaurant_id": "40734541"}
+//{"localidade": "Manhattan", "restaurant_id": "40783353"}
+//{"localidade": "Brooklyn", "restaurant_id": "40799991"}
+//{"localidade": "Brooklyn", "restaurant_id": "40803773"}
+//{"localidade": "Manhattan", "restaurant_id": "40807227"}
+//{"localidade": "Manhattan", "restaurant_id": "40865946"}
+//{"localidade": "Bronx", "restaurant_id": "40875290"}
+
+//Número de documentos encontrados: 35
+
+//Letra B)
+//Criação de Indexes na função createIndex.java de CbdApplication.java
+
+//Letra C)

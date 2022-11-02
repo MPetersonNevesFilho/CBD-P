@@ -334,12 +334,10 @@ db.restaurants.aggregate([{$unwind:"$grades"},{$group : {_id:{nome:"$nome", rest
 //{ "_id" : { "nome" : "Victoria Pizza", "restaurant_id" : "40374268" }, "averageScore" : 30.8 }
 //{ "_id" : { "nome" : "Live Bait Bar & Restaurant", "restaurant_id" : "40387237" }, "averageScore" : 32.6 }
 
-
 // 21. Indique os restaurantes que têm gastronomia "Portuguese", o somatório de score é superior a 50 e estão numa latitude inferior a -60.
 db.restaurants.aggregate([{$unwind: "$grades" }, {$group : {_id:{nome:"$nome", gastronomia:"$gastronomia", restaurant_id:"$restaurant_id"}, coords:{$first:"$address.coord"}, sumScore:{$sum:"$grades.score"}}},{ $match:{sumScore:{$gt: 50}, "_id.gastronomia":"Portuguese","coords.0":{$lt:-60}}}])
 //{ "_id" : { "nome" : "Pao", "gastronomia" : "Portuguese", "restaurant_id" : "40535455" }, "coords" : [ -74.0093371, 40.7258846 ], "sumScore" : 80 }
 //{ "_id" : { "nome" : "Mateus Restaurant", "gastronomia" : "Portuguese", "restaurant_id" : "40394518" }, "coords" : [ -73.732315, 40.720725 ], "sumScore" : 67 }
-
 
 // 22. Apresente o nome e o score dos 3 restaurantes com score médio mais elevado.
 db.restaurants.aggregate({$unwind:"$grades"},{$group:{_id:"$nome", averageScore:{$avg:"$grades.score"}}},{$sort:{"averageScore":-1}},{$limit:3})
@@ -356,27 +354,28 @@ db.restaurants.aggregate([{$group:{_id:"$gastronomia", rua:{ $first: "$address.r
 //--- Vários objetos como este abaixo
 //{ "_id" : "Atlantic Avenue", "numeroGastronomias" : 3 }
 
-
-// 25. .. 30. Descreva 5 perguntas adicionais à base dados (alíneas 26 a 30), significativamente distintas das anteriores, e apresente igualmente a solução de pesquisa para cada questão.
-db.restaurants.aggregate([{$group:{_id:"$localidade", gastronomias:{$addToSet:"$gastronomia"}}}, {$sort:{_id:1}}]).pretty()
-
-
-// 26
-db.restaurants.find({grades:{$not:{$elemMatch:{date:{$gte:ISODate("2014-09-01T00:00:00Z")}}}}})
-
-
-// 27
-db.restaurants.aggregate([{$unwind:"$grades"}, {$sort:{"restaurant_id":1, "grades.date":1}}, {$group:{_id:"$restaurant_id", lastScore:{$last:"$grades.score"}, localidade:{$first:"$localidade"}}}, {$group:{ _id:"$localidade", mediaScore: {$avg:"$lastScore"}}}])
-
-
-// 28
-db.restaurants.aggregate([{$unwind:"$grades"}, {$match:{"grades.grade":{$ne:"Not Yet Graded"}}}, {$group:{_id:{"localidade":"$localidade", "grade":"$grades.grade"}, numero:{$sum:1}}}, {$sort:{"_id.localidade":1}}])
-
-
-// 29
-db.restaurants.aggregate([{$unwind:"$grades"}, {$match:{"grades.grade":{$ne: "Not Yet Graded"}}}, {$group:{_id:{"restaurante":"$nome", "grade":"$grades.grade" }, numero: {$sum: 1}}}, {$sort: {"_id.restaurante":1}}])
-
-
-// 30
+// 25. Listagem decrescente do número de restaurantes por zipcode.
 db.restaurants.aggregate({$group:{_id:"$address.zipcode", numeroRestaurantes:{$sum:1}}}, {$sort:{numeroRestaurantes:-1}})
+//--- Vários objetos como este abaixo
+//{ "_id" : "10003", "numeroRestaurantes" : 139 }
+//{ "_id" : "10022", "numeroRestaurantes" : 100 }
+//{ "_id" : "10017", "numeroRestaurantes" : 95 }
 
+// 26. Listagem da mediana de pontos dos restaurantes por localidade.
+db.restaurants.aggregate([{$unwind:"$grades"}, {$sort:{"restaurant_id":1, "grades.date":1}}, {$group:{_id:"$restaurant_id", lastScore:{$last:"$grades.score"}, localidade:{$first:"$localidade"}}}, {$group:{ _id:"$localidade", mediaScore: {$avg:"$lastScore"}}}]).pretty()
+//--- Vários objetos como este abaixo
+//{ "_id" : "Bronx", "mediaScore" : 10.414239482200648 }
+//{ "_id" : "Brooklyn", "mediaScore" : 10.320175438596491 }
+
+// 27. Listagem de restaurantes que tem avaliações em datas anteriores a 01/09/2014.
+db.restaurants.find({grades:{$not:{$elemMatch:{date:{$gte:ISODate("2014-09-01T00:00:00Z")}}}}})
+//--- Vários objetos como este abaixo
+//{ "_id" : ObjectId("635826a208f101e2d5feebd7"), "address" : { "building" : "1236", "coord" : [ -73.8893654,40.81376179999999], "rua" : "238 Spofford Ave", "zipcode" : "10474" }, "localidade" : "Bronx", "gastronomia" : "Chinese", "grades" : [ {"date" : ISODate("2013-12-30T00:00:00Z"), "grade" : "A", "score" : 8 }, { "date" : ISODate("2013-01-08T00:00:00Z"), "grade" :"A", "score" : 10 }, { "date" : ISODate("2012-06-12T00:00:00Z"), "grade" : "B", "score" : 15 } ], "nome" : "Happy Garden","restaurant_id" : "40363289" }
+//{ "_id" : ObjectId("635826a208f101e2d5feebd9"), "address" : { "building" : "1007", "coord" : [ -73.856077, 40.848447 ], "rua" : "Morris Park Ave", "zipcode" : "10462" }, "localidade" : "Bronx", "gastronomia" : "Bakery", "grades" : [ { "date" : ISODate("2014-03-03T00:00:00Z"), "grade" : "A", "score" : 2 }, { "date" : ISODate("2013-09-11T00:00:00Z"), "grade" : "A", "score" : 6 }, { "date" : ISODate("2013-01-24T00:00:00Z"), "grade" : "A", "score" : 10 }, { "date" : ISODate("2011-11-23T00:00:00Z"), "grade" : "A", "score" : 9 }, { "date" : ISODate("2011-03-10T00:00:00Z"), "grade" : "B", "score" : 14 } ], "nome" : "Morris Park Bake Shop", "restaurant_id" : "30075445" }
+
+// 28. Listagem de número de notas de restaurantes por localidade na ordem decrescente.
+db.restaurants.aggregate([{$unwind:"$grades"}, {$match:{"grades.grade":{$ne:"Not Yet Graded"}}}, {$group:{_id:{"localidade":"$localidade", "grade":"$grades.grade"}, numero:{$sum:1}}}, {$sort:{"_id.localidade":1}}])
+//--- Vários objetos como este abaixo
+//{ "_id" : { "localidade" : "Brooklyn", "grade" : "A" }, "numero" : 2651 }
+//{ "_id" : { "localidade" : "Brooklyn", "grade" : "C" }, "numero" : 118 }
+//{ "_id" : { "localidade" : "Manhattan", "grade" : "B" }, "numero" : 1145 }

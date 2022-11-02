@@ -1,4 +1,4 @@
-# CBD – Lab205 – Marcus Filho - NMec 101082
+# CBD – Lab201 – Marcus Filho - NMec 101082
 
 // Letra a e b)
 A base de dados escolhida foi Australian Fatal Road Accident 1989-2021, com 52.843 casos de estudo contendo as seguintes informações: Crash ID, State, Month, Year, Dayweek, Time, Crash Type, Bus Involvement, Heavy Rigid Truck Involvement, Articulated Truck Involvement, Speed Limit, Road User, Gender, Age, National Remoteness Areas, SA4 Name 2016, National LGA Name 2017, National Road Type, Christmas Period, Easter Period, Age Group, Day of week, Time of day.
@@ -46,10 +46,6 @@ db.crash.find({$or:[{"Heavy Rigid Truck Involvement": "Yes", "Year":{$gte:2005, 
 
 // c.7 Listagem de _id, Crash ID, Year e Time de acidentes entre as 00h até 9h de 2000 até 2021
 db.crash.find({$or:[{"Year":{$gte:2000}, "Time":{$regex: "^0"}}, {"Year":{$gte:2000}, "Time":{$regex: "^1:"}}, {"Year":{$gte:2000}, "Time":{$regex: "^2:"}}, {"Year":{$gte:2000}, "Time":{$regex: "^3:"}}, {"Year":{$gte:2000}, "Time":{$regex: "^4:"}}, {"Year":{$gte:2000}, "Time":{$regex: "^5:"}}, {"Year":{$gte:2000}, "Time":{$regex: "^6:"}}, {"Year":{$gte:2000}, "Time":{$regex: "^7:"}}, {"Year":{$gte:2000}, "Time":{$regex: "^8:"}}, {"Year":{$gte:2000}, "Time":{$regex: "^9:"}}]}, {"Crash ID":1, "Year":1, "Time":1})
-
-db.crash.find({"Year":{$gte:2000}, "Time":{$in:[{$regex:"^0:"}]}}, {"Crash ID":1, "Year":1, "Time":1})
-
-, {"Crash ID":1, "Year":1, "Time":1})
 //{ "_id" : ObjectId("63598713d48403cd1f1e0987"), "Crash ID" : 20211073, "Year" : 2021, "Time" : "6:13" }
 //{ "_id" : ObjectId("63598713d48403cd1f1e0d40"), "Crash ID" : 20201065, "Year" : 2020, "Time" : "3:05" }
 //{ "_id" : ObjectId("63598713d48403cd1f1e098f"), "Crash ID" : 20216009, "Year" : 2021, "Time" : "1:30" }
@@ -100,6 +96,7 @@ db.crash.aggregate([{$match:{"Age Group":"17_to_25", "Time":{$ne:""}}}, {$projec
 //{ "Time" : "6:00", "Road User" : "Passenger", "Age" : 17 }
 //{ "Time" : "4:20", "Road User" : "Driver", "Age" : 17 }
 //{ "Time" : "7:37", "Road User" : "Driver", "Age" : 17 }
+
 // d.7 Listagem de ID, sem _id, velocidade limite, idade do grupo envolvido e mês de acidentes envolvendo caminhões com velocidade limite acima de 60 em sextas-feiras a noite, ordenados de forma decrescente de velocidade limite com limite de 7 objetos.
 db.crash.aggregate([{$match:{"Speed Limit":{$gte:60}, "Dayweek":"Friday", "Time of day":"Night","Heavy Rigid Truck Involvement":"Yes", "Articulated Truck Involvement":"Yes",}}, {$project:{"Crash ID":1, "Speed Limit":1, "Age Group":1, "Month":1, _id:0}}, {$sort:{"Speed Limit":-1}}, {$limit:7}])
 //{ "Crash ID" : 20021280, "Month" : 3, "Speed Limit" : 110, "Age Group" : "17_to_25" }
