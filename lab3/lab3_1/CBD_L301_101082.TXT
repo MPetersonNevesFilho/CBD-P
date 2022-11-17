@@ -2,19 +2,17 @@
 
  => Instalando Cassandra e seguindo tutorial https://cassandra.apache.org/_/quickstart.html
 
-1º Criação de ficheiro data.cql
+1º Utilizando o ficheiro data
+	docker run --rm --network cassandra -v "./data.cql" -e CQLSH_HOST=cassandra -e CQLSH_PORT=9042 -e 	CQLVERSION=3.4.5 nuvo/docker-cqlsh
 
-2º Utilizando o ficheiro data
-	docker run --rm --network cassandra -v "./data.cql" -e CQLSH_HOST=cassandra -e CQLSH_PORT=9042 -e CQLVERSION=3.4.5 nuvo/docker-cqlsh
-
-3º Conexão da Cassandra para cqlsh
+2º Conexão da Cassandra para cqlsh
 	docker run --rm -it --network cassandra nuvo/docker-cqlsh cqlsh cassandra 9042 --cqlversion='3.4.5'
 
-4º Ler os dados
+3º Ler os dados
 	SELECT * FROM store.shopping_cart;
 	InvalidRequest: Error from server: code=2200 [Invalid query] message="keyspace store does not exist"
 
-5º Implementação manual de dados
+4º Implementação manual de dados
 	-- Create a keyspace
 	CREATE KEYSPACE IF NOT EXISTS store WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '1' 		};
 
@@ -32,17 +30,17 @@
 	(userid, item_count, last_update_timestamp)
 	VALUES ('1234', 5, toTimeStamp(now()));
 
-6º Nova tentativa de leitura de dados
+5º Nova tentativa de leitura de dados
 	SELECT * FROM store.shopping_cart;
 	userid | item_count | last_update_timestamp
 	--------+------------+---------------------------------
 	   1234 |          5 | 2022-11-17 12:25:45.095000+0000
 	   9876 |          2 | 2022-11-17 12:25:44.219000+0000
 
-7º Adicionando mais uma linha de dados
+6º Adicionando mais uma linha de dados
 	INSERT INTO store.shopping_cart (userid, item_count) VALUES ('4567', 20);	
 
-8º Última tentativa de leitura de dados
+7º Última tentativa de leitura de dados
 	 SELECT * FROM store.shopping_cart;
 
 	 userid | item_count | last_update_timestamp
@@ -51,7 +49,7 @@
 	   1234 |          5 | 2022-11-17 12:25:45.095000+0000
 	   9876 |          2 | 2022-11-17 12:25:44.219000+0000
 
-9º Eliminação do que foi construído nesta BD
+8º Eliminação do que foi construído nesta BD
 	docker kill cassandra
 	docker network rm cassandra
 
@@ -212,8 +210,8 @@
 	(5 rows)
 
 14º Adição de mais dois pet, um deles com TimeToLive de 30 segundos
-	INSERT INTO pet_cao (pet_id, pet_nome, procedimentos, veterinario) VALUES (7, 'Jujuba', {'2022-11-15 10:00-0000': ['corte de unhas', 'banho', 'pesagem']}, {ultima_visita: '2022-11-17 10:00-0000', vet_nome: 'Nataly Neves', 	diagnostico: 'saudável'});
-	INSERT INTO pet_cao (pet_id, pet_nome, procedimentos, veterinario) VALUES (8, 'Cebolinha', {'2022-11-15 10:00-0000': ['corte de unhas', 'banho', 'pesagem']}, {ultima_visita: '2022-11-17 10:00-0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}) USING TTL 30;
+	INSERT INTO pet_cao (pet_id, pet_nome, procedimentos, veterinario) VALUES (7, 'Jujuba', {'2022-11-15 10:00-0000': ['corte de unhas', 'banho', 'pesagem']}, {ultima_visita: '2022-11-17 10:00-0000', vet_nome: 'Nataly Neves', 		diagnostico: 'saudável'});
+	INSERT INTO pet_cao (pet_id, pet_nome, procedimentos, veterinario) VALUES (8, 'Cebolinha', {'2022-11-15 10:00-0000': ['corte de unhas', 'banho', 'pesagem']}, {ultima_visita: '2022-11-17 10:00-0000', vet_nome: 'Nataly Neves', 	diagnostico: 'saudável'}) USING TTL 30;
 
 	SELECT * FROM pet_cao;
 
