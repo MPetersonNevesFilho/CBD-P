@@ -1,0 +1,246 @@
+# CBD – Lab301 – Marcus Filho
+
+ => Instalando Cassandra e seguindo tutorial https://cassandra.apache.org/_/quickstart.html
+
+1º Criação de ficheiro data.cql
+
+2º Utilizando o ficheiro data
+	docker run --rm --network cassandra -v "./data.cql" -e CQLSH_HOST=cassandra -e CQLSH_PORT=9042 -e CQLVERSION=3.4.5 nuvo/docker-cqlsh
+
+3º Conexão da Cassandra para cqlsh
+	docker run --rm -it --network cassandra nuvo/docker-cqlsh cqlsh cassandra 9042 --cqlversion='3.4.5'
+
+4º Ler os dados
+	SELECT * FROM store.shopping_cart;
+	InvalidRequest: Error from server: code=2200 [Invalid query] message="keyspace store does not exist"
+
+5º Implementação manual de dados
+	-- Create a keyspace
+	CREATE KEYSPACE IF NOT EXISTS store WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '1' 		};
+
+	-- Create a table
+	CREATE TABLE IF NOT EXISTS store.shopping_cart (
+	userid text PRIMARY KEY,
+	item_count int,
+	last_update_timestamp timestamp
+	);
+
+	-- Insert some data
+	INSERT INTO store.shopping_cart
+	(userid, item_count, last_update_timestamp)
+	INSERT INTO store.shopping_cart
+	(userid, item_count, last_update_timestamp)
+	VALUES ('1234', 5, toTimeStamp(now()));
+
+6º Nova tentativa de leitura de dados
+	SELECT * FROM store.shopping_cart;
+	userid | item_count | last_update_timestamp
+	--------+------------+---------------------------------
+	   1234 |          5 | 2022-11-17 12:25:45.095000+0000
+	   9876 |          2 | 2022-11-17 12:25:44.219000+0000
+
+7º Adicionando mais uma linha de dados
+	INSERT INTO store.shopping_cart (userid, item_count) VALUES ('4567', 20);	
+
+8º Última tentativa de leitura de dados
+	 SELECT * FROM store.shopping_cart;
+
+	 userid | item_count | last_update_timestamp
+	--------+------------+---------------------------------
+	   4567 |         20 |                            null
+	   1234 |          5 | 2022-11-17 12:25:45.095000+0000
+	   9876 |          2 | 2022-11-17 12:25:44.219000+0000
+
+9º Eliminação do que foi construído nesta BD
+	docker kill cassandra
+	docker network rm cassandra
+
+ => Códigos cqlsh e seguindo tutorial https://www.tutorialspoint.com/cassandra/cassandra_cqlsh.htm
+
+1º Criando novamente um container no docker e entrando no cqlsh
+	rm -Rf ~/.cassandra
+	docker pull cassandra:latest
+	docker network create cassandra
+	docker run --rm -d --name cassandra --hostname cassandra --network cassandra cassandra
+	docker run --rm -it --network cassandra nuvo/docker-cqlsh cqlsh cassandra 9042 --cqlversion='3.4.5'
+
+2º Criação de KeySpace pet e table pet_cao com informações sobre cães
+	CREATE KEYSPACE pet WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
+	USE pet;
+	CREATE TABLE pet_cao(pet_id int PRIMARY KEY, pet_raca text, pet_nome text, pet_idade int);
+
+3º Adicionando dois cães na tabela pet_cao
+	INSERT INTO pet_cao (pet_id, pet_raca, pet_nome, pet_idade) VALUES (1, 'Chihuahua', 'Gigante', 2);
+	INSERT INTO pet_cao (pet_id, pet_raca, pet_nome, pet_idade) VALUES (2, 'SRD', 'Magrelo', 1);
+
+4º Verificando informações previamente adicionadas
+	 SELECT * FROM pet_cao;
+
+	 pet_id | pet_idade | pet_nome | pet_raca
+	--------+-----------+----------+-----------
+	      1 |         2 |  Gigante | Chihuahua
+	      2 |         1 |  Magrelo |       SRD
+	(2 rows)
+
+5º Atualização de raça informada "de forma equivocada" e novo SELECT para verificação
+	UPDATE pet_cao SET pet_raca='Molosso Romano' WHERE pet_id=1;
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_idade | pet_nome | pet_raca
+	--------+-----------+----------+----------------
+	      1 |         2 |  Gigante | Molosso Romano
+	      2 |         1 |  Magrelo |            SRD
+	(2 rows)
+
+6º SELECT específico com nome e idades dos cães
+	SELECT pet_nome, pet_idade FROM pet_cao;
+
+	 pet_nome | pet_idade
+	----------+-----------
+	  Gigante |         2
+	  Magrelo |         1
+	(2 rows)
+
+7º DELETE específico da idade de um dos pets
+	DELETE pet_idade FROM pet_cao WHERE pet_id=2;
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_idade | pet_nome | pet_raca
+	--------+-----------+----------+----------------
+	      1 |         2 |  Gigante | Molosso Romano
+	      2 |      null |  Magrelo |            SRD
+	(2 rows)
+
+8º DELETE de tuplo inteiro e SELECT
+	DELETE FROM pet_cao WHERE pet_id=1;
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_idade | pet_nome | pet_raca
+	--------+-----------+----------+----------
+	      2 |      null |  Magrelo |      SRD
+
+	(1 rows)
+	
+8º DELETE de duas colunas, uma cada vez
+	ALTER TABLE pet_cao DROP pet_idade;
+	ALTER TABLE pet_cao DROP pet_raca;
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_nome
+	--------+----------
+	      2 |  Magrelo
+
+	(1 rows)
+	
+9º Inserção de dois outros valores e um SELECT *
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_nome
+	--------+----------
+	      1 |     Urso
+	      2 |  Magrelo
+	      3 |   BatCat
+
+	(3 rows)
+
+	
+10º Adição de coluna com um frozen<map<timestamp, list<text>>>
+	ALTER TABLE pet_cao ADD procedimentos frozen<map<timestamp, list<text>>>;
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_nome | procedimentos
+	--------+----------+---------------
+	      1 |     Urso |          null
+	      2 |  Magrelo |          null
+	      3 |   BatCat |          null
+
+	(3 rows)
+	
+11º Adição de dois novos pets com procedimentos
+	INSERT INTO pet_cao (pet_id, pet_nome, procedimentos) VALUES (5, 'Amora', {'2022-11-15 10:00-0000': ['corte de 	unhas', 'banho', 'pesagem']});
+	INSERT INTO pet_cao (pet_id, pet_nome, procedimentos) VALUES (6, 'Willikit', {'2022-11-16 10:00-0000': ['cort
+	e', 'banho']});
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_nome | procedimentos
+	--------+----------+-----------------------------------------------------------------------------
+	      5 |    Amora | {'2022-11-15 10:00:00.000000+0000': ['corte de unhas', 'banho', 'pesagem']}
+	      1 |     Urso |                                                                        null
+	      2 |  Magrelo |                                                                        null
+	      6 | Willikit |                     {'2022-11-16 10:00:00.000000+0000': ['corte', 'banho']}
+	      3 |   BatCat |                                                                        null
+
+	(5 rows)
+
+12º Criação do tipo visita_pet com informações da última visita do pet ao veterinário e adição ao pet_cao
+	CREATE TYPE pet.visita_vet (ultima_visita timestamp, vet_nome text, diagnostico text);
+	DESCRIBE TYPE visita_vet
+
+	CREATE TYPE pet.visita_vet (
+	    ultima_visita timestamp,
+	    vet_nome text,
+	    diagnostico text
+	);
+
+	ALTER TABLE pet_cao ADD veterinario visita_vet;
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_nome | procedimentos                                                               | veterinario
+	--------+----------+-----------------------------------------------------------------------------+-------------
+	      5 |    Amora | {'2022-11-15 10:00:00.000000+0000': ['corte de unhas', 'banho', 'pesagem']} |        null
+	      1 |     Urso |                                                                        null |        null
+	      2 |  Magrelo |                                                                        null |        null
+	      6 | Willikit |                     {'2022-11-16 10:00:00.000000+0000': ['corte', 'banho']} |        null
+	      3 |   BatCat |                                                                        null |        null
+
+	(5 rows)
+
+13º Adição de visitas veteriárias nos precedimentos de quem ainda não tinha e a descrição da visita
+	UPDATE pet_cao SET veterinario={ultima_visita:'2022-11-17 10:00-0000', vet_nome:'Nataly Neves', diagnostico:'saudável'} WHERE pet_id=3;
+	UPDATE pet_cao SET veterinario={ultima_visita:'2022-11-17 10:00-0000', vet_nome:'Nataly Neves', diagnostico:'obeso, mas saudável'} WHERE pet_id=2;
+	UPDATE pet_cao SET veterinario={ultima_visita:'2022-11-17 10:00-0000', vet_nome:'Nataly Neves', diagnostico:'saudável'} WHERE pet_id=1;
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_nome | procedimentos                                                               | veterinario
+	--------+----------+-----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------
+	5 |    Amora | {'2022-11-15 10:00:00.000000+0000': ['corte de unhas', 'banho', 'pesagem']} |                                                                                                             null
+	1 |     Urso |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
+	2 |  Magrelo |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} | {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'obeso, mas saudável'}
+	6 | Willikit |                     {'2022-11-16 10:00:00.000000+0000': ['corte', 'banho']} |                                                                                                             null
+	3 |   BatCat |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
+
+	(5 rows)
+
+14º Adição de mais dois pet, um deles com TimeToLive de 30 segundos
+	INSERT INTO pet_cao (pet_id, pet_nome, procedimentos, veterinario) VALUES (7, 'Jujuba', {'2022-11-15 10:00-0000': ['corte de unhas', 'banho', 'pesagem']}, {ultima_visita: '2022-11-17 10:00-0000', vet_nome: 'Nataly Neves', 	diagnostico: 'saudável'});
+	INSERT INTO pet_cao (pet_id, pet_nome, procedimentos, veterinario) VALUES (8, 'Cebolinha', {'2022-11-15 10:00-0000': ['corte de unhas', 'banho', 'pesagem']}, {ultima_visita: '2022-11-17 10:00-0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}) USING TTL 30;
+
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_nome  | procedimentos                                                               | veterinario
+	--------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	      5 |     Amora | {'2022-11-15 10:00:00.000000+0000': ['corte de unhas', 'banho', 'pesagem']} |                                                                                                             null
+	      1 |      Urso |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
+	      8 | Cebolinha | {'2022-11-15 10:00:00.000000+0000': ['corte de unhas', 'banho', 'pesagem']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
+	      2 |   Magrelo |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} | {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'obeso, mas saudável'}
+	      7 |    Jujuba | {'2022-11-15 10:00:00.000000+0000': ['corte de unhas', 'banho', 'pesagem']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
+	      6 |  Willikit |                     {'2022-11-16 10:00:00.000000+0000': ['corte', 'banho']} |                                                                                                             null
+	      3 |    BatCat |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
+
+	(7 rows)
+
+15º SELECT final depois de 30 segundos
+	SELECT * FROM pet_cao;
+
+	 pet_id | pet_nome | procedimentos                                                               | veterinario
+	--------+----------+-----------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------
+	      5 |    Amora | {'2022-11-15 10:00:00.000000+0000': ['corte de unhas', 'banho', 'pesagem']} |                                                                                                             null
+	      1 |     Urso |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
+	      2 |  Magrelo |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} | {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'obeso, mas saudável'}
+	      7 |   Jujuba | {'2022-11-15 10:00:00.000000+0000': ['corte de unhas', 'banho', 'pesagem']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
+	      6 | Willikit |                     {'2022-11-16 10:00:00.000000+0000': ['corte', 'banho']} |                                                                                                             null
+	      3 |   BatCat |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
+
+	(6 rows)
+	
+
