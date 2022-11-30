@@ -1,0 +1,151 @@
+# CBD – Lab302 – Marcus Filho
+
+ => Letra A
+0 - Criando keyspace
+	CREATE KEYSPACE lab302 WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};
+	use lab302;
+
+1º - Criando tabela de usuários
+	CREATE TABLE User (email text, username text, name text, register_time timestamp, PRIMARY KEY(email, username));
+
+2º - Criando tabela de videos
+	CREATE TABLE Video (id uuid, author text, name text, upload_timestamp timestamp, description text, tags list<text>, PRIMARY KEY(id, author, upload_timestamp)) WITH CLUSTERING ORDER BY (author ASC, upload_timestamp DESC);
+
+3º - Criando tabela de comentários
+	CREATE TABLE Comment_Author(id uuid, author text, video_id uuid, comment text, upload_timestamp timestamp, PRIMARY KEY (author, upload_timestamp)) WITH CLUSTERING ORDER BY (upload_timestamp DESC);
+	CREATE TABLE Comment_Video(id uuid, video_id uuid, author text, comment text, upload_timestamp timestamp,PRIMARY KEY (video_id, upload_timestamp)) WITH CLUSTERING ORDER BY (upload_timestamp DESC);
+
+4º - Criando tabela de followers de um video
+	CREATE TABLE Follower(video_id uuid, followers_list list<text>, PRIMARY KEY (video_id));
+
+5º - Criando tabela de registo de evento
+	CREATE TABLE Event(id uuid, user text, video_id uuid, action text, real_timestamp timestamp, video_time int, PRIMARY KEY(user, video_id, real_timestamp, video_time)) WITH CLUSTERING ORDER BY (video_id ASC, real_timestamp DESC);
+
+6º - Criando tabela de Rating
+	CREATE TABLE Rating(id uuid, video_id uuid, value int, PRIMARY KEY(id, video_id));
+
+Obs: inserção de dados do ficheiro data.cql, 20 elementos em cada tabela.
+
+7º - Permitir pesquisa de todos os videos por autor
+	SELECT * FROM Video WHERE author='test01@test.com' ALLOW FILTERING;
+
+	 id                                   | author          | upload_timestamp                | description         | name         | tags
+	--------------------------------------+-----------------+---------------------------------+---------------------+--------------+--------------------------------
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | test01@test.com | 2022-11-30 17:55:18.170000+0000 | Nice description 01 | Nice name 01 | ['tagA01', 'tagB01', 'tagC01']
+
+	(1 rows)
+
+8º - Permitir pesquisa de comentários por utilizador
+	SELECT * FROM Comment_Author WHERE author='test01@test.com';
+
+	 author          | upload_timestamp                | comment         | id                                   | video_id
+	-----------------+---------------------------------+-----------------+--------------------------------------+--------------------------------------
+	 test01@test.com | 2022-11-30 18:07:42.297000+0000 | Nice comment 01 | e229fc91-70d9-11ed-b3ed-f57c32dcb1b9 | 26a11090-70d8-11ed-b3ed-f57c32dcb1b9
+
+	(1 rows)
+
+9º - Permitir pesquisa de comentários por video
+	SELECT * FROM Comment_Video WHERE video_id = 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 ORDER BY upload_timestamp DESC;
+
+	 video_id                             | upload_timestamp                | author          | comment         | id
+	--------------------------------------+---------------------------------+-----------------+-----------------+--------------------------------------
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.331000+0000 | test07@test.com | Nice comment 07 | d6446a31-70db-11ed-b3ed-f57c32dcb1b9
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.329000+0000 | test06@test.com | Nice comment 06 | d6441c11-70db-11ed-b3ed-f57c32dcb1b9
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.328000+0000 | test05@test.com | Nice comment 05 | d643f501-70db-11ed-b3ed-f57c32dcb1b9
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.326000+0000 | test04@test.com | Nice comment 04 | d643a6e1-70db-11ed-b3ed-f57c32dcb1b9
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.324000+0000 | test03@test.com | Nice comment 03 | d64358c1-70db-11ed-b3ed-f57c32dcb1b9
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.322000+0000 | test02@test.com | Nice comment 02 | d6430aa1-70db-11ed-b3ed-f57c32dcb1b9
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.320000+0000 | test01@test.com | Nice comment 01 | d642bc81-70db-11ed-b3ed-f57c32dcb1b9
+
+	(7 rows)
+
+10º - Permitir pesquisa de rating médio e número de votos
+	SELECT avg(value) as Media, count(value) as NumRatings FROM Rating WHERE video_id = 26a8d8c0-70d8-11ed-b3ed-f57c32dcb1b9 ALLOW FILTERING;
+
+	 media | numratings
+	-------+------------
+	     2 |          5
+
+	(1 rows)
+
+ => Letra B
+1º - Buscar todos de cada tabela com saída em JSON
+	SELECT JSON * FROM User;
+	SELECT JSON * FROM Video;
+	SELECT JSON * FROM Comment_Author;
+	SELECT JSON * FROM Comment_Video;
+	SELECT JSON * FROM Follower;
+	SELECT JSON * FROM Event;
+	SELECT JSON * FROM Rating;
+
+ => Letra C
+1º - Já realizado junto aos passos da letra A
+
+=> Letra D
+1º - Os últimos 3 comentários introduzidos para um vídeo
+	SELECT * FROM Comment_Video WHERE video_id = 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 ORDER BY upload_timestamp DESC LIMIT 3;
+
+	 video_id                             | upload_timestamp                | author          | comment         | id
+	--------------------------------------+---------------------------------+-----------------+-----------------+--------------------------------------
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.331000+0000 | test07@test.com | Nice comment 07 | d6446a31-70db-11ed-b3ed-f57c32dcb1b9
+	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.329000+0000 | test06@test.com | Nice comment 06 | d6441c11-70db-11ed-b3ed-f57c32dcb1b9
+ 	 26a11090-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:21:41.328000+0000 | test05@test.com | Nice comment 05 | d643f501-70db-11ed-b3ed-f57c32dcb1b9
+
+	(3 rows)
+
+2º - Lista das tags de determinado vídeo
+	SELECT tags FROM Video WHERE id=26a11090-70d8-11ed-b3ed-f57c32dcb1b9;
+
+	 tags
+	--------------------------------
+	 ['tagA01', 'tagB01', 'tagC01']
+
+	(1 rows)
+
+
+3º - Todos os vídeos com a tag Aveiro (Alterado para exemplo existente na base de dados)
+	SELECT * FROM Video WHERE tags CONTAINS 'tagB05' ALLOW FILTERING;
+
+	 id                                   | author          | upload_timestamp                | description         | name         | tags
+	--------------------------------------+-----------------+---------------------------------+---------------------+--------------+--------------------------------
+	 26a2e550-70d8-11ed-b3ed-f57c32dcb1b9 | test05@test.com | 2022-11-30 17:55:18.181000+0000 | Nice description 05 | Nice name 05 | ['tagA05', 'tagB05', 'tagC05']
+
+	(1 rows)
+
+4º - Os últimos 5 eventos de determinado vídeo realizados por um utilizador
+	SELECT * FROM Event WHERE user='test20@test.com' AND video_id=26a9b320-70d8-11ed-b3ed-f57c32dcb1b9 ORDER BY real_timestamp DESC LIMIT 5;
+
+	 user            | video_id                             | real_timestamp                  | video_time | action | id
+	-----------------+--------------------------------------+---------------------------------+------------+--------+--------------------------------------
+	 test20@test.com | 26a9b320-70d8-11ed-b3ed-f57c32dcb1b9 | 2022-11-30 18:39:51.655000+0000 |         81 |   Play | 6026a771-70de-11ed-b3ed-f57c32dcb1b9
+
+	(1 rows)
+
+5º - Vídeos partilhados por determinado utilizador (maria1987, por exemplo) num determinado período de tempo (Agosto de 2017, por exemplo)
+
+
+6º - Os últimos 10 vídeos, ordenado inversamente pela data da partilhada
+	Não é possível, pois não existe Global Querying em Cassandra.
+
+7º - Todos os seguidores (followers) de determinado vídeo
+	SELECT followers_list FROM Follower WHERE video_id=26a94df0-70d8-11ed-b3ed-f57c32dcb1b9;
+
+ followers_list
+---------------------------------------------------------------------------------------------------------------------------------------
+ ['test11@test.com', 'test12@test.com', 'test13@test.com', 'test14@test.com', 'test15@test.com', 'test20@test.com']
+
+(1 rows)
+
+8º - Todos os comentários (dos vídeos) que determinado utilizador está a seguir (following)
+
+
+9º - Os 5 vídeos com maior rating
+	Não é possível, pois não existe Global Querying em Cassandra.
+
+10º - Uma query que retorne todos os vídeos e que mostre claramente a forma pela qual estão ordenados
+
+
+11º - Lista com as Tags existentes e o número de vídeos catalogados com cada uma delas
+
+
+12. .. 13. Descreva 2 perguntas adicionais à base dados (alíneas 12 a 13), significativamente distintas das anteriores, e apresente igualmente a solução de pesquisa para cada questão.

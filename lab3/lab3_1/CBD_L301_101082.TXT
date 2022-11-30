@@ -240,5 +240,3 @@
 	      3 |   BatCat |                        {'2022-11-17 10:00:00.000000+0000': ['veterinario']} |            {ultima_visita: '2022-11-17 10:00:00.000000+0000', vet_nome: 'Nataly Neves', diagnostico: 'saudável'}
 
 	(6 rows)
-	
-
