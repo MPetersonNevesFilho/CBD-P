@@ -1,0 +1,62 @@
+// NMEC: 101082
+#1
+MATCH (p)-[:ACTED_IN]->(m), (p)-[:DIRECTED]->(m) RETURN p.name, m.title
+
+#2
+MATCH (p)-[:ACTED_IN]->(m) WHERE 2005 < m.released RETURN p.name
+
+#3
+MATCH (n)-[r]->(m) WITH n AS n, m AS m, COUNT(r) AS numRelations WHERE 1 < numRelations RETURN n.name, m.title
+
+#4
+MATCH (p1)-[:REVIEWED]->(m), (p2)-[:REVIEWED]->(m) RETURN p1.name, p2.name, m.title
+
+#5
+MATCH (p1)-[:ACTED_IN]->(m1), (p2)-[:ACTED_IN]->(m1), (p1)-[:ACTED_IN]->(m2), (p2)-[:ACTED_IN]->(m2) RETURN p1.name, p2.name
+
+#6
+MATCH (p)-[:ACTED_IN]->(m:Movie {title: "Apollo 13"}) RETURN avg(1995 - p.born)
+
+#7
+MATCH (p)-[:ACTED_IN]->(m) RETURN m.title, round(avg(m.released - p.born), 2) AS ages ORDER BY ages DESC LIMIT 10
+
+#8
+
+#9
+MATCH path=shortestPath( (john:Person {name:"John Cusack"})-[*]-(demi:Person {name:"Demi Moore"}) ) RETURN path
+
+#10
+MATCH path=shortestPath( (keanu:Person {name:"Keanu Reeves"})-[*]-(tom:Person {name:"Tom Cruise"}) ) RETURN length(path)
+
+#11
+MATCH path=shortestPath((jims:Person)-[*]-(kevins:Person)) WHERE jims.name STARTS WITH "Jim" AND kevins.name STARTS WITH "Kevin" RETURN min(length(path))
+
+#12
+MATCH (p:Person)-[*2]-(j:Person {name:"Jim Cash"}) RETURN p.name
+
+#13
+MATCH path=shortestPath((p1:Person)-[*]-(kevin:Person {name: "Kevin Bacon"})) WHERE p1 <> kevin RETURN max(length(path))
+
+#14
+MATCH path=shortestPath((p1:Person)-[*]-(p2:Person)) WHERE p1 <> p2 RETURN max(length(path))
+
+#15
+MATCH path=shortestPath((p1:Person)-[*]-(p2:Person)) WHERE p1 <> p2 WITH p1, p2, length(path) AS minLen, path RETURN COUNT(path), minLen ORDER BY COUNT(path) DESC
+
+#16
+MATCH path=shortestPath((p1:Person)-[:ACTED_IN*]-(p2:Person)) WHERE p1 <> p2 WITH p1, p2, length(path) AS minLength, path ORDER BY minLength RETURN p1.name, p2.name, minLength LIMIT 10
+
+#17
+MATCH (p1:Person)-[r:ACTED_IN]-(m:Movie) UNWIND r.roles AS dr WITH p1, m, dr WHERE dr STARTS WITH "Dr." RETURN p1.name, m.title, dr
+
+#18
+// Diretores e seus filmes que contem o Keanu Reeves como ator
+MATCH (p1:Person)-[r:DIRECTED]-(m:Movie), (keanu:Person {name: "Keanu Reeves"})-[r2:ACTED_IN]-(m:Movie) RETURN p1.name, m.title
+
+#19
+// Atores que atuaram apenas uma única vez
+MATCH (p1:Person)-[r:ACTED_IN]-(m:Movie) WITH p1 AS p1, m AS m, COUNT(p1) AS contagem WHERE contagem = 1 RETURN p1.name, m.title
+
+#20
+// Atores de filmes onde a avaliação é menor que 50
+MATCH (p1:Person)-[r:REVIEWED]->(m:Movie) WHERE r.rating < 50 MATCH (p2)-[:ACTED_IN]->(m) RETURN p2.name, m.title

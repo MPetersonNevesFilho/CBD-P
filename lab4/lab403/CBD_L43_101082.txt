@@ -1,0 +1,57 @@
+== > CBD - Lab4 - 3 questão - NMEC: 101082
+= > Letra A
+ - Entidades:
+	Contributor(svn_id, real_name)
+	Project (project_name)
+	Organization (org_name)
+
+ - Relações:
+	Contributor-[EMPLOYED]->Organization
+	Contributor-[CONTRIBUTED]->Project (role_on_project, commit_num)
+
+= > Letra B
+ - Constrições:
+    CREATE CONSTRAINT FOR (project:Project) REQUIRE project.project_name IS UNIQUE;
+    CREATE CONSTRAINT FOR (contributor:Contributor) REQUIRE contributor.svn_id IS UNIQUE;
+    CREATE CONSTRAINT FOR (organization:Organization) REQUIRE organization.org_name IS UNIQUE;
+
+ - Inserção de nós e relações:
+    LOAD CSV WITH HEADERS
+    FROM "file:///git_selection.csv" AS Row
+    MATCH (contributor:Contributor {svn_id: Row.svn_id}),(project:Project {project_name:Row.project_name})
+    WITH contributor, project, Row
+    CREATE (contributor)-[:CONTRIBUTED {commit_num: Row.num, role_on_project: Row.role_on_project}]->(project)
+
+    LOAD CSV WITH HEADERS
+    FROM "file:///git_selection.csv" AS Row
+    MATCH (contributor:Contributor {svn_id: Row.svn_id}),(organization:Organization {org_name : Row.organization})
+    WITH contributor, organization
+    CREATE (contributor)-[:EMPLOYED]->(organization)
+
+= > Letra C
+#1
+MATCH (contributor:Contributor) RETURN contributor.svn_id AS ID, contributor.real_name AS Name
+
+#2
+MATCH (contributor:Contributor) RETURN contributor.real_name AS Name
+
+#3
+MATCH (contributor:Contributor)-[contributed:CONTRIBUTED]->(project:Project) WITH project, COUNT(contributed) AS countCon WHERE countCon > 0 RETURN project.project_name AS Project
+
+#4
+MATCH (contributor:Contributor)-[contributed:CONTRIBUTED]-(project:Project) WITH contributor, COUNT(DISTINCT project) AS countPro RETURN contributor.real_name AS Contribuidor, countPro AS Contribuições
+
+#5
+MATCH (contributor:Contributor)-[contributed:CONTRIBUTED]-(project:Project) WITH contributor, COUNT(DISTINCT project) AS countPro RETURN contributor.real_name AS Contribuidor, countPro AS Contribuições ORDER BY Contribuições DESC
+
+#6
+MATCH (contributor:Contributor)-[contributed:CONTRIBUTED]->(project:Project) WITH project, COUNT(DISTINCT contributor) as countCon RETURN project.project_name AS Projeto, countCon AS numContribuidores
+
+#7
+MATCH (contributor:Contributor)-[contributed:CONTRIBUTED]->(project:Project) WHERE contributed.role_on_project = "Committer" WITH project, COUNT(DISTINCT contributor) as countCom RETURN project.project_name AS Projeto, countCom AS numCommitter ORDER BY numCommitter DESC
+
+#8
+MATCH (contributorInt:Contributor{svn_id:"atm"})-[:CONTRIBUTED]->(project:Project)<-[:CONTRIBUTED]-(contributor:Contributor) RETURN contributorInt.real_name AS atmNome, contributor.real_name AS Parceiro, project.project_name AS Projeto
+
+#9
+MATCH (contributorInt:Contributor{svn_id:"atm"})-[rel1:CONTRIBUTED]->(project:Project)<-[rel2:CONTRIBUTED]-(contributor:Contributor) WHERE rel1.role_on_project = "PMC" AND rel2.role_on_project = "Committer" RETURN contributor.real_name AS Contribuidor

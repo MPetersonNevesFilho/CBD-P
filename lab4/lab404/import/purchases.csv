@@ -1,0 +1,215 @@
+client,flower
+Clifton Taylor,Rosa
+Martha Cobbley,Cravo
+Travis Hyde,Margarida
+Gloria Scott,Cravo
+Vicki Lomas,Azaleia
+Randall Fitzgerald,Tulipa
+Nicole Bryant,Lotus
+Anna Russell,Azaleia
+Adriana Braden,Hortensia
+Maryam Marshall,Tulipa
+Joselyn Jackson,Margarida
+Michael Szymansky,Margarida
+Christine Ellis,Margarida
+Jean Lambert,Tulipa
+Josephine Strand,Begonia
+Richard Lewis,Margarida
+Lucila Emory,Azaleia
+Margaret Kobayashi,Suculenta
+Eugene Simoneau,Lotus
+Donna Parker,Margarida
+Lynette Johnson,Orquidea
+Peter Sheeran,Suculenta
+Eddie Cannon,Margarida
+Christopher Sands,Orquidea
+Grover Diaz,Cravo
+Sarah Chambers,Hortensia
+Donna Viveros,Azaleia
+William Sayman,Lotus
+Wyatt Bussey,Lotus
+Luis Dillon,Hortensia
+Gregory Martin,Margarida
+Patrick Olds,Orquidea
+Trudy Crisafi,Cravo
+Luis Fields,Hortensia
+Alisha Quintanilla,Orquidea
+William Howard,Margarida
+Lisa Bush,Lotus
+Donald Blackwood,Cravo
+Tony Kluender,Suculenta
+Juanita Billy,Margarida
+Stacey Small,Orquidea
+Kenneth Yazzie,Hortensia
+William Dunham,Cravo
+Kenneth Hughes,Tulipa
+Paulette Brooks,Azaleia
+Brenda Swisher,Cravo
+Henry Cardenas,Hortensia
+Hilda Salo,Lotus
+Darrell George,Orquidea
+Alvin Torres,Rosa
+Ellen Kain,Suculenta
+Kimberly Li,Suculenta
+Robert Brown,['Begonia', 4.5, 'Rosa']
+Clifton Taylor,['Cravo', 15.5, 'Rosa']
+Mark Mooney,['Suculenta', 3.5, 'Verde']
+Thomas Lewis,['Orquidea', 45.5, 'Rosa']
+Charles Sims,['Begonia', 4.5, 'Rosa']
+Chester Horrigan,['Margarida', 12.5, 'Amarela']
+John Compton,['Orquidea', 45.5, 'Rosa']
+Cristina Aschenbrenner,['Margarida', 12.5, 'Amarela']
+Larry Claypoole,['Lotus', 3.5, 'Branca']
+Pamela Stewart,['Tulipa', 2.5, 'Vermelha']
+Ronnie Engel,['Orquidea', 45.5, 'Rosa']
+Gordon Monroe,['Cravo', 15.5, 'Rosa']
+Anthony White,['Suculenta', 3.5, 'Verde']
+Gloria Scott,['Rosa', 20.5, 'Vermelha']
+Elouise Ramos,['Rosa', 20.5, 'Vermelha']
+Pat West,['Hortensia', 17.5, 'Azul']
+Charles Jameson,['Orquidea', 45.5, 'Rosa']
+Ignacia Thomas,['Orquidea', 45.5, 'Rosa']
+James Spivey,['Lotus', 3.5, 'Branca']
+Gary Gallo,['Rosa', 20.5, 'Vermelha']
+Zachary Greenhoward,['Margarida', 12.5, 'Amarela']
+Herman Berry,['Suculenta', 3.5, 'Verde']
+Herbert Alvarado,['Orquidea', 45.5, 'Rosa']
+Anna Russell,['Suculenta', 3.5, 'Verde']
+Thomas Evans,['Lotus', 3.5, 'Branca']
+Theodore Stephens,['Rosa', 20.5, 'Vermelha']
+Rene Bain,['Orquidea', 45.5, 'Rosa']
+Judy Lopez,['Begonia', 4.5, 'Rosa']
+Bobbie Johnson,['Cravo', 15.5, 'Rosa']
+Irene Verley,['Cravo', 15.5, 'Rosa']
+Asa Green,['Azaleia', 21.5, 'Vermelha']
+Louise Welch,['Rosa', 20.5, 'Vermelha']
+Jess Jenkins,['Lotus', 3.5, 'Branca']
+Angela Thomas,['Margarida', 12.5, 'Amarela']
+Frank Halford,['Hortensia', 17.5, 'Azul']
+Robert Hubbard,['Hortensia', 17.5, 'Azul']
+Sherry Wright,['Tulipa', 2.5, 'Vermelha']
+Selena Parenteau,['Tulipa', 2.5, 'Vermelha']
+Jean Lambert,['Lotus', 3.5, 'Branca']
+Josephine Strand,['Lotus', 3.5, 'Branca']
+Dania Henson,['Suculenta', 3.5, 'Verde']
+Ann Hoefler,['Orquidea', 45.5, 'Rosa']
+Glenn Williams,['Begonia', 4.5, 'Rosa']
+Kimberly Adami,['Hortensia', 17.5, 'Azul']
+James Kuhl,['Suculenta', 3.5, 'Verde']
+Marjorie Myers,['Lotus', 3.5, 'Branca']
+Barbara Allen,['Begonia', 4.5, 'Rosa']
+Margaret Kobayashi,['Suculenta', 3.5, 'Verde']
+Eugene Simoneau,['Tulipa', 2.5, 'Vermelha']
+John Ward,['Rosa', 20.5, 'Vermelha']
+William Cruz,['Lotus', 3.5, 'Branca']
+Alisha Levin,['Begonia', 4.5, 'Rosa']
+Lynette Johnson,['Rosa', 20.5, 'Vermelha']
+Luke Wilcoxen,['Orquidea', 45.5, 'Rosa']
+Peter Sheeran,['Tulipa', 2.5, 'Vermelha']
+Amanda Mansfield,['Margarida', 12.5, 'Amarela']
+Tyler Lujan,['Tulipa', 2.5, 'Vermelha']
+David Wash,['Lotus', 3.5, 'Branca']
+Michael Miller,['Suculenta', 3.5, 'Verde']
+Wyatt Bussey,['Rosa', 20.5, 'Vermelha']
+Charles Cox,['Azaleia', 21.5, 'Vermelha']
+Johnathan Rice,['Suculenta', 3.5, 'Verde']
+Curtis Podesta,['Tulipa', 2.5, 'Vermelha']
+George Thornburg,['Azaleia', 21.5, 'Vermelha']
+Holly Madden,['Azaleia', 21.5, 'Vermelha']
+Patrick Olds,['Begonia', 4.5, 'Rosa']
+Elizabeth Belk,['Rosa', 20.5, 'Vermelha']
+Kirstie Eikenberry,['Hortensia', 17.5, 'Azul']
+Gracie Grey,['Cravo', 15.5, 'Rosa']
+Trudy Crisafi,['Hortensia', 17.5, 'Azul']
+Earnest Bozeman,['Cravo', 15.5, 'Rosa']
+James Heavrin,['Cravo', 15.5, 'Rosa']
+Linda Mckibben,['Lotus', 3.5, 'Branca']
+Florence Stine,['Azaleia', 21.5, 'Vermelha']
+Richard Chapman,['Suculenta', 3.5, 'Verde']
+Gretchen Castro,['Margarida', 12.5, 'Amarela']
+Barbara Mccann,['Margarida', 12.5, 'Amarela']
+Douglas Hall,['Rosa', 20.5, 'Vermelha']
+William Zimmerebner,['Hortensia', 17.5, 'Azul']
+Rebecca Jones,['Tulipa', 2.5, 'Vermelha']
+William Jordan,['Tulipa', 2.5, 'Vermelha']
+Felton Dempsey,['Cravo', 15.5, 'Rosa']
+Chanel Giordano,['Azaleia', 21.5, 'Vermelha']
+Christopher Browne,['Azaleia', 21.5, 'Vermelha']
+Mary Leister,['Begonia', 4.5, 'Rosa']
+Linda Montgomery,['Orquidea', 45.5, 'Rosa']
+Bettie Martin,['Margarida', 12.5, 'Amarela']
+Elroy Schulze,['Begonia', 4.5, 'Rosa']
+Nathan Mallet,['Azaleia', 21.5, 'Vermelha']
+Jeanette Wagner,['Cravo', 15.5, 'Rosa']
+Jacob Brook,['Margarida', 12.5, 'Amarela']
+Frank Manygoats,['Lotus', 3.5, 'Branca']
+Lisa Bush,['Tulipa', 2.5, 'Vermelha']
+William Orlando,['Suculenta', 3.5, 'Verde']
+Juanita Billy,['Suculenta', 3.5, 'Verde']
+Mary Collier,['Tulipa', 2.5, 'Vermelha']
+Shane Martinez,['Hortensia', 17.5, 'Azul']
+Reginald Eversole,['Orquidea', 45.5, 'Rosa']
+Pauline Brooks,['Begonia', 4.5, 'Rosa']
+Doreen Never,['Hortensia', 17.5, 'Azul']
+Lisa Stephens,['Begonia', 4.5, 'Rosa']
+Latoya Howard,['Tulipa', 2.5, 'Vermelha']
+Regina Miles,['Orquidea', 45.5, 'Rosa']
+Taylor Curry,['Lotus', 3.5, 'Branca']
+Andrew Smith,['Azaleia', 21.5, 'Vermelha']
+Dorothy Beaudion,['Lotus', 3.5, 'Branca']
+Lisa Kestner,['Orquidea', 45.5, 'Rosa']
+Shelby Banderas,['Lotus', 3.5, 'Branca']
+Charles Montalvo,['Cravo', 15.5, 'Rosa']
+Marion Kahn,['Azaleia', 21.5, 'Vermelha']
+Edward Lee,['Rosa', 20.5, 'Vermelha']
+Katherine Smith,['Lotus', 3.5, 'Branca']
+Krystle Marshall,['Orquidea', 45.5, 'Rosa']
+Keith Walsh,['Margarida', 12.5, 'Amarela']
+Terri Hirko,['Tulipa', 2.5, 'Vermelha']
+Alvin Lee,['Azaleia', 21.5, 'Vermelha']
+Norma Wimmer,['Begonia', 4.5, 'Rosa']
+Sharon Blue,['Cravo', 15.5, 'Rosa']
+Carol Wright,['Margarida', 12.5, 'Amarela']
+Charles Dorow,['Suculenta', 3.5, 'Verde']
+Adam Edgecomb,['Tulipa', 2.5, 'Vermelha']
+Daniel Ortiz,['Lotus', 3.5, 'Branca']
+Melissa Kalberer,['Tulipa', 2.5, 'Vermelha']
+Stewart Mercer,['Orquidea', 45.5, 'Rosa']
+Irma Campbell,['Orquidea', 45.5, 'Rosa']
+Virginia Phelan,['Hortensia', 17.5, 'Azul']
+Ana Borjas,['Suculenta', 3.5, 'Verde']
+Jeffrey Babin,['Suculenta', 3.5, 'Verde']
+Harry Mccright,['Cravo', 15.5, 'Rosa']
+Freda Aguillon,['Azaleia', 21.5, 'Vermelha']
+Vilma Morton,['Margarida', 12.5, 'Amarela']
+Patrick Cook,['Rosa', 20.5, 'Vermelha']
+Jonathan Alzugaray,['Begonia', 4.5, 'Rosa']
+Marie Pearson,['Begonia', 4.5, 'Rosa']
+Charlene Merson,['Margarida', 12.5, 'Amarela']
+Todd Trautman,['Suculenta', 3.5, 'Verde']
+Alphonso Kanemoto,['Cravo', 15.5, 'Rosa']
+Hannah Walsh,['Cravo', 15.5, 'Rosa']
+Jamie Dubreuil,['Lotus', 3.5, 'Branca']
+Adrienne Smoot,['Rosa', 20.5, 'Vermelha']
+Andrew Gorelick,['Orquidea', 45.5, 'Rosa']
+Harold Stevens,['Margarida', 12.5, 'Amarela']
+Doris Hernandez,['Rosa', 20.5, 'Vermelha']
+James Mcdonald,['Suculenta', 3.5, 'Verde']
+Suzanne Mitchell,['Rosa', 20.5, 'Vermelha']
+Nancy Currie,['Hortensia', 17.5, 'Azul']
+Alvin Torres,['Margarida', 12.5, 'Amarela']
+Janice Corson,['Azaleia', 21.5, 'Vermelha']
+Robert Martinez,['Orquidea', 45.5, 'Rosa']
+June Nygren,['Margarida', 12.5, 'Amarela']
+Shannon Padilla,['Tulipa', 2.5, 'Vermelha']
+Dave Reed,['Hortensia', 17.5, 'Azul']
+James Foreman,['Begonia', 4.5, 'Rosa']
+Irvin Powell,['Tulipa', 2.5, 'Vermelha']
+Rose Soares,['Hortensia', 17.5, 'Azul']
+Melissa Baker,['Cravo', 15.5, 'Rosa']
+Christopher Morris,['Cravo', 15.5, 'Rosa']
+Thomas Dyches,['Suculenta', 3.5, 'Verde']
+Sharron Bell,['Rosa', 20.5, 'Vermelha']
+Tony Wilson,['Margarida', 12.5, 'Amarela']
+Edwin Bressette,['Hortensia', 17.5, 'Azul']
+Libby Martin,['Cravo', 15.5, 'Rosa']
